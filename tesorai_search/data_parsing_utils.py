@@ -59,7 +59,7 @@ def get_fragpipe_peptides(filepath, files=None):
 
     fragpipe["is_decoy"] = fragpipe.Protein.apply(lambda x: "rev_" in x)
     fragpipe = fragpipe.query("~is_decoy").copy()
-    fragpipe_peptides = fragpipe.Sequence.str.replace("I", "L").unique()
+    fragpipe_peptides = fragpipe.Peptide.str.replace("I", "L").unique()
     print(
         f"Found {len(fragpipe_peptides)} peptides by fragpipe from {len(fragpipe)} unique rows"
     )
