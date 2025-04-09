@@ -1,0 +1,45 @@
+name: Lint Codebase
+
+# Controls when the workflow will run
+on:
+  pull_request: # Run on pull requests targeting the main branch
+    branches: [ main ]
+  push: # Also run on pushes to the main branch (optional, good for catching direct pushes if rules fail)
+    branches: [ main ]
+
+jobs:
+  lint:
+    name: Run Linters # Name of the job shown on GitHub
+    runs-on: ubuntu-latest # Use the latest available Ubuntu runner
+
+    steps:
+      - name: Check out repository # Step 1: Get the code
+        uses: actions/checkout@v4 # Use the standard checkout action (update version if needed)
+
+      - name: Set up Python # Step 2: Set up a Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Choose a Python version relevant to your project
+
+      - name: Install dependencies # Step 3: Install linters and nbqa
+        run: |
+          python -m pip install --upgrade pip
+          # Install flake8 (style/error checking), black (formatter), and nbqa
+          # Consider adding these to a requirements-dev.txt file instead
+          pip install flake8 black nbqa
+
+      - name: Run flake8 (Python files) # Step 4a: Lint .py files with flake8
+        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Example: Find Python syntax errors or undefined names
+
+      - name: Run flake8 via nbqa (Notebooks) # Step 4b: Lint .ipynb files with flake8 via nbqa
+        run: nbqa flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Same checks, but targeted at notebook cells
+
+      - name: Check formatting with black (Python files) # Step 5a: Check .py formatting with black
+        run: black --check .
+        # --check makes black fail if files *would* be reformatted, without changing them
+
+      - name: Check formatting with black via nbqa (Notebooks) # Step 5b: Check .ipynb formatting with black via nbqa
+        run: nbqa black --check .
+        # Same check, but targeted at notebook cells
