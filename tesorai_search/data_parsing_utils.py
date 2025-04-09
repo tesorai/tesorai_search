@@ -5,6 +5,7 @@ Created on 2025/03/17
 """
 
 import pandas as pd
+from pathlib import Path
 
 
 def map_peaks_modifications(peptide):
@@ -30,23 +31,31 @@ def remove_modifications(peptide):
 
 
 def get_maxquant_peptides(filepath, files=None):
-    maxquant_ids = pd.read_csv(
-        filepath,
-        usecols=[
-            "Raw file",
-            "Scan number",
-            "Scan index",
-            "Sequence",
-            "Modified sequence",
-            "Reverse",
-        ],
-        sep="\t",
-    )
-    # print(maxquant_ids.shape)
-    # Remove decoys and filter only the raw files of interest
-    if files is not None:
-        maxquant_ids = maxquant_ids[maxquant_ids["Raw file"].isin(files)]
-    maxquant_ids = maxquant_ids.query('Reverse != "+"').copy()
+    filename = Path(filepath).name
+    if filename == "msms.txt":
+        maxquant_ids = pd.read_csv(
+            filepath,
+            usecols=[
+                "Raw file",
+                "Scan number",
+                "Scan index",
+                "Sequence",
+                "Modified sequence",
+                "Reverse",
+            ],
+            sep="\t",
+        )
+        # print(maxquant_ids.shape)
+        # Remove decoys and filter only the raw files of interest
+        if files is not None:
+            maxquant_ids = maxquant_ids[maxquant_ids["Raw file"].isin(files)]
+        maxquant_ids = maxquant_ids.query('Reverse != "+"').copy()
+
+    else:
+        maxquant_ids = pd.read_csv(
+            filepath,
+            sep="\t",
+        )
     maxquant_peptides = maxquant_ids.Sequence.str.replace("I", "L").unique()
     print(
         f"Found {len(maxquant_peptides)} peptides by maxquant from {len(maxquant_ids)} unique rows"
@@ -90,3 +99,18 @@ def get_tesorai_peptides(filepath):
     tesorai_peptides = tesorai.query("~is_decoy").clean_sequence.unique()
     print(f"Found {len(tesorai_peptides)} peptides by TS")
     return tesorai_peptides
+
+
+def get_prosit_peptides(filepath):
+    prosit_df = pd.read_csv(filepath, sep="\t")
+    prosit_df["clean_sequence"] = (
+        prosit_df.peptide.str.strip("_")
+        .str.strip(".")
+        .str.replace("m", "M")
+        .str.replace("I", "L")
+    )
+    prosit_peptides = prosit_df[prosit_df["q-value"] <= 0.01].clean_sequence.unique()
+    print(
+        f"Found {len(prosit_peptides)} by Prosit from {len(prosit_df[prosit_df['q-value'] <= 0.01])} total ids rows"
+    )
+    return prosit_peptides
