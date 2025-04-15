@@ -176,3 +176,4 @@ cython_debug/
 data/
 # Jupyter Notebook
 .ipynb_checkpoints
+.DS_Store
