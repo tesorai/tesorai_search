@@ -66,6 +66,21 @@ def get_fragpipe_peptides(filepath, files=None):
     return fragpipe_peptides
 
 
+def get_fragpipe_psm_df(filepath, files=None):
+    fragpipe = pd.read_csv(filepath, sep="\t")
+
+    fragpipe["is_decoy"] = fragpipe.Protein.apply(lambda x: "rev_" in x)
+    fragpipe = fragpipe.query("~is_decoy").copy()
+    fragpipe["Peptide"] = fragpipe.Peptide.str.replace("I", "L")
+    fragpipe["scan_id"] = (
+        fragpipe["Spectrum"].str.split(".").str[1].astype(int).astype(str)
+    )
+    fragpipe["filename"] = (
+        fragpipe["Spectrum File"].str.split("-").str[1].str.split(".").str[0]
+    )
+    return fragpipe
+
+
 def get_peaks_peptides(filepath, files=None):
     df = pd.read_csv(filepath)
     df["peptide"] = df.Peptide.apply(map_peaks_modifications)
