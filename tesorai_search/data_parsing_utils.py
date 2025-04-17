@@ -5,6 +5,7 @@ Created on 2025/03/17
 """
 
 import pandas as pd
+import os
 
 
 def map_peaks_modifications(peptide):
@@ -29,24 +30,35 @@ def remove_modifications(peptide):
     )
 
 
-def get_maxquant_peptides(filepath, files=None):
-    maxquant_ids = pd.read_csv(
-        filepath,
-        usecols=[
-            "Raw file",
-            "Scan number",
-            "Scan index",
-            "Sequence",
-            "Modified sequence",
-            "Reverse",
-        ],
-        sep="\t",
-    )
-    # print(maxquant_ids.shape)
-    # Remove decoys and filter only the raw files of interest
-    if files is not None:
-        maxquant_ids = maxquant_ids[maxquant_ids["Raw file"].isin(files)]
-    maxquant_ids = maxquant_ids.query('Reverse != "+"').copy()
+def get_maxquant_peptides(filepath):
+    """
+    Get the peptides from MaxQuant
+    """
+    # There should only be one file in the folder
+    files = [f for f in os.listdir(filepath) if f.endswith(".txt")][0]
+
+    if files == "msms.txt":
+        maxquant_ids = pd.read_csv(
+            filepath + files,
+            usecols=[
+                "Raw file",
+                "Scan number",
+                "Scan index",
+                "Sequence",
+                "Modified sequence",
+                "Reverse",
+            ],
+            sep="\t",
+        )
+        # Remove decoys
+        maxquant_ids = maxquant_ids.query('Reverse != "+"').copy()
+    elif files == "peptides.txt":
+        maxquant_ids = pd.read_csv(
+            filepath + files,
+            usecols=["Sequence"],
+            sep="\t",
+        )
+
     maxquant_peptides = maxquant_ids.Sequence.str.replace("I", "L").unique()
     print(
         f"Found {len(maxquant_peptides)} peptides by maxquant from {len(maxquant_ids)} unique rows"
