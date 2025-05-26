@@ -1,0 +1,6 @@
+pandas
+matplotlib_venn
+pyteomics
+scipy
+seaborn
+numpy
