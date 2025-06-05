@@ -22,7 +22,7 @@ Typical installation time is 1-2 minutes.
 
 Follow the guide on https://docs.tesorai.com/docs/console/getting-started/ to create an account.
 
-### 3.2. Download the data from PRIDE and run the search
+### 3.2. [Optional] Download the data from PRIDE and run the search
 
 - Download 190416_FPTMT_MS3_HCDOT_R1 from https://www.ebi.ac.uk/pride/archive/projects/PXD030340. 
 
@@ -33,7 +33,26 @@ Follow the guide on https://docs.tesorai.com/docs/console/getting-started/ to cr
 - Download the peptides.tsv file to the `data` folder.
 - Run the notebooks to generate the figures and tables.
 
+### 3.3. Download other tools' data from mendeley
 
-## 4. License
+The processed data that was used for benchmarking purposes (FragPipe, PEAKS, Prosit, MaxQuant), is available here: 
+Burq, Maximilien; Stepec, Dejan (2025), “Tesorai Search”, Mendeley Data, V1, doi: 10.17632/znkr2dm8fb.1
+
+To run the notebooks, you need to download the data from mendeley and put it in the `data` folder.
+
+### 3.4. Run the notebooks
+
+Each notebook is self-contained and can be run independently. They correspond to individual figures and tables in the manuscript.
+
+## 4. Citation
+
+If you use this code, or the Tesorai Platform in your research, please cite:
+
+```
+Back to Basics: Spectrum and Peptide Sequence are Sufficient for Top-tier Mass Spectrometry Proteomics Identification
+Maximilien Burq, Dejan Stepec, Juan Restrepo, Jure Zbontar, Shamil Urazbakhtin, Bryan Crampton, Shivani Tiwary, Rehan Chinoy, Melissa Miao, Juergen Cox, Peter Cimermancic
+```
+
+## 5. License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
