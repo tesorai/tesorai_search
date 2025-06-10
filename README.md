@@ -35,7 +35,7 @@ Follow the guide on https://docs.tesorai.com/docs/console/getting-started/ to cr
 
 ### 3.3. Download other tools' data from mendeley
 
-The processed data that was used for benchmarking purposes (FragPipe, PEAKS, Prosit, MaxQuant), is available here: 
+The processed data that was used for benchmarking purposes (FragPipe, PEAKS, Prosit, MaxQuant), is available [here](https://data.mendeley.com/datasets/znkr2dm8fb/1): 
 Burq, Maximilien; Stepec, Dejan (2025), “Tesorai Search”, Mendeley Data, V1, doi: 10.17632/znkr2dm8fb.1
 
 To run the notebooks, you need to download the data from mendeley and put it in the `data` folder.
