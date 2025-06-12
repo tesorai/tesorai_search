@@ -117,3 +117,39 @@ def get_tesorai_peptides(filepath):
     tesorai_peptides = tesorai.query("~is_decoy").clean_sequence.unique()
     print(f"Found {len(tesorai_peptides)} peptides by TS")
     return tesorai_peptides
+
+
+def compute_qs(examples):
+    """Compute the q-values for a list of examples.
+
+    Args:
+        examples (list): A list of booleans indicating whether the example is an error
+        (decoy, not in synthesized set), sorted by decreasing score.
+    """
+    # FDR is False Discovery Rate:
+    # https://en.wikipedia.org/wiki/False_discovery_rate.
+    fdrs = []
+    true_positive = 0
+    false_positive = 0
+    for example in examples:
+        if not example:
+            true_positive += 1
+        else:
+            false_positive += 1
+
+        if false_positive > 0 and true_positive == 0:
+            fdrs.append(1.0)
+        else:
+            fdrs.append(false_positive / true_positive)
+
+    def cummin(xs):
+        if len(xs) == 0:
+            return []
+
+        ys = [xs[0]]
+        for x in xs[1:]:
+            ys.append(min(ys[-1], x))
+        return ys
+
+    qs = cummin(fdrs[::-1])[::-1]
+    return qs
