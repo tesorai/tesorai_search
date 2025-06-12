@@ -35,7 +35,8 @@ def get_maxquant_peptides(filepath):
     Get the peptides from MaxQuant
     """
     # There should only be one file in the folder
-    files = [f for f in os.listdir(filepath) if f.endswith(".txt")][0]
+    files = [f for f in os.listdir(filepath) if f.endswith(".txt")][-1]
+    print(f"Found file {files} in {filepath}")
 
     if files == "msms.txt":
         maxquant_ids = pd.read_csv(
