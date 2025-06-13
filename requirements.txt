@@ -4,3 +4,5 @@ pyteomics
 scipy
 seaborn
 numpy
+openpyxl
+upsetplot 

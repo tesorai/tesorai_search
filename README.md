@@ -29,8 +29,8 @@ Follow the guide on https://docs.tesorai.com/docs/console/getting-started/ to cr
 - Download human FASTA dataset from Uniprot: https://www.uniprot.org/uniprotkb?query=homo+sapiens&facets=reviewed%3Atrue
 
 - Upload the data to the console.tesorai.com platform.
-- Run the search. Expected runtime is under 1 hour.
-- Download the peptides.tsv file to the `data` folder.
+- Go to jobs and select the uploaded raw file and fasta file. Also select in TMT_6_PLEX TMT Probe. Expected runtime is under 1 hour.
+- Download the file called '$exp_pep_fdr.tsv' where $exp is the name you gave to the experiment.
 - Run the notebooks to generate the figures and tables.
 
 ### 3.3. Download other tools' data from mendeley
@@ -38,7 +38,7 @@ Follow the guide on https://docs.tesorai.com/docs/console/getting-started/ to cr
 The processed data that was used for benchmarking purposes (FragPipe, PEAKS, Prosit, MaxQuant), is available [here](https://data.mendeley.com/datasets/znkr2dm8fb/1): 
 Burq, Maximilien; Stepec, Dejan (2025), “Tesorai Search”, Mendeley Data, V1, doi: 10.17632/znkr2dm8fb.1
 
-To run the notebooks, you need to download the data from mendeley and put it in the `data` folder.
+To run the notebooks, you need to download the data from mendeley and put it in the `data/benchmark_results` folder.
 
 ### 3.4. Run the notebooks
 
