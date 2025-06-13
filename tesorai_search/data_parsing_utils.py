@@ -119,7 +119,7 @@ def get_tesorai_peptides(filepath):
     return tesorai_peptides
 
 
-def compute_qs(examples):
+def compute_qs(df):
     """Compute the q-values for a list of examples.
 
     Args:
@@ -131,6 +131,7 @@ def compute_qs(examples):
     fdrs = []
     true_positive = 0
     false_positive = 0
+    examples = df["is_decoy"].tolist()
     for example in examples:
         if not example:
             true_positive += 1
@@ -152,4 +153,5 @@ def compute_qs(examples):
         return ys
 
     qs = cummin(fdrs[::-1])[::-1]
-    return qs
+    df["qs"] = qs
+    return df
